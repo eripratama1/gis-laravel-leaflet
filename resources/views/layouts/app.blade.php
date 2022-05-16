@@ -11,13 +11,14 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('style-css')
 </head>
 <body>
     <div id="app">
@@ -52,6 +53,15 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item">
+                            <a href="{{ route('space.index') }}" class="nav-link">Spaces</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('centre-point.index') }}" class="nav-link">Koordinat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('category.index') }}" class="nav-link">Kategori</a>
+                        </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -77,6 +87,7 @@
 
         <main class="py-4">
             @yield('content')
+            @stack('javascript')
         </main>
     </div>
 </body>
