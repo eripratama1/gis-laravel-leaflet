@@ -14,6 +14,9 @@ class CentrePointController extends Controller
      */
     public function index()
     {
+        /**
+         * Menampilkan data centrepoint dengan datatable
+         */
         return view('centrepoint.index');
     }
 
@@ -24,6 +27,9 @@ class CentrePointController extends Controller
      */
     public function create()
     {
+        /**
+         * Menampilkan form create centrepoint
+         */
         return view('centrepoint.create');
     }
 
@@ -35,14 +41,17 @@ class CentrePointController extends Controller
      */
     public function store(Request $request)
     {
+        // Lakukan validasi data
         $this->validate($request,[
             'location' => 'required'
         ]);
 
+        // jalankan proses simpan data ke table centrepoint
         $centrePoint = new CentrePoint;
         $centrePoint->location = $request->input('location');
         $centrePoint->save();
 
+        // setelah data disimpan redirect ke halaman index centrepoint
         if ($centrePoint) {
             return redirect()->route('centre-point.index')->with('success', 'Data berhasil Disimpan');
         } else {
@@ -69,6 +78,8 @@ class CentrePointController extends Controller
      */
     public function edit(CentrePoint $centrePoint)
     {
+        // Mencari data yang dipilih lalu menampilkannya ke view edit centrepoint
+        // dan mempassing $centrePoint ke view edit centrepoint
         $centrePoint = CentrePoint::findOrFail($centrePoint->id);
         return view('centrepoint.edit',[
             'centrePoint' => $centrePoint
@@ -84,7 +95,8 @@ class CentrePointController extends Controller
      */
     public function update(Request $request, CentrePoint $centrePoint)
     {
-    
+        // setelah data centrepoint yang akan di edit sesuai 
+        // maka jalankan proses update jika berhasil akan di redirect ke halaman index
         $centrePoint = CentrePoint::findOrFail($centrePoint->id);
         $centrePoint->location = $request->input('location');
         $centrePoint->update();
@@ -104,6 +116,7 @@ class CentrePointController extends Controller
      */
     public function destroy($id)
     {
+        // Proses hapus data  dari tabel centrepoint
         $centrePoint = CentrePoint::findOrFail($id);
         $centrePoint->delete();
         return redirect()->back();

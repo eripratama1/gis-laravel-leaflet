@@ -48,20 +48,13 @@
                         </p>
 
                         <p>
-                        <h4><strong>Kategori Spot :</strong></h4>
-                        @foreach ($spaces->getCategory as $item)
-                            <h4> > {{ $item->name }}</h4>
-                        @endforeach
-                        </p>
-
-                        <p>
                         <h4><strong>Keterangan Space :</strong></h4>
                         <p>{{ $spaces->content }}</p>
                         </p>
 
                         <p>
                         <h4>
-                            <strong>Foto Utama :</strong>
+                            <strong>Foto</strong>
                         </h4>
                         <img class="img-fluid" width="200" src="{{ asset('uploads/imgCover/' . $spaces->image) }}"
                             alt="">
@@ -81,7 +74,8 @@
             </div>
         </div>
     </div>
-
+    {{-- karena hanya akan menampilkan single data dari marker yang dipilih jadi kita tidak 
+    melakukan looping untuk halaman detail ini --}}
     <script>
         var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -138,7 +132,6 @@
 
         var marker = new L.marker(curLocation, {
             draggable: 'false',
-            //icon: markerIcon,
         });
         map.addLayer(marker);
     </script>

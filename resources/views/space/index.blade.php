@@ -4,6 +4,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 @endsection
 
+{{-- Untuk view index space  ini hampir sama dengan view index centrepoint dimana kita memuat cdn datatable
+css dan js yang membedakannya ada pada ajax server side di bagian push('javascript') yaitu pada route 
+
+--}}
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -52,6 +56,8 @@
                 responsive: true,
                 lengthChange: false,
                 autoWidth: false,
+                
+                // Route untuk menampilkan data space
                 ajax: '{{ route('data-space') }}',
                 columns: [{
                         data: 'DT_RowIndex',

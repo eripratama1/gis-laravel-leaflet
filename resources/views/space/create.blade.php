@@ -14,6 +14,13 @@
     </style>
 @endsection
 
+
+{{-- Pada view create.blade space ini kita kan menginput beberapa data yaitu 
+nama space (tempat), deskripsi, gambar jika di perlukan, dan titik koordinat lokasi
+Untuk cdn yang kita muat disini hampir sama dengan form create pada file view create centrepoint
+
+--}}
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -21,6 +28,7 @@
                 <div class="card rounded">
                     <div class="card-header">Tambah Space</div>
                     <div class="card-body">
+                        {{-- action form yang mengarah ke route space.store untuk proses penyimpanan data --}}
                         <form action="{{ route('space.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
@@ -39,18 +47,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="">Kategori space</label>
-                                <select name="category[]" multiple="multiple"
-                                    class="category form-control @error('category') is-invalid @enderror" id="">
-                                    @foreach ($category as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
                             <div class="form-group mb-3">
                                 <label for="">Deskripsi</label>
                                 <textarea name="content" class="form-control @error('content')
@@ -89,22 +86,9 @@
 
 
     <script>
-        // var tiles = L.tileLayer(
-        //     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        //         maxZoom: 18,
-        //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-        //             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //         id: 'mapbox/streets-v11',
-        //         tileSize: 512,
-        //         zoomOffset: -1
-        //     }).addTo(map);
 
-        $(document).ready(function() {
-            $('.category').select2({
-                placeholder: 'Pilih Data Kategori'
-            })
-        })
-
+        // fungsi ini akan berjalan ketika akan menambahkan gambar dimana fungsi ini
+        // akan membuat preview image sebelum kita simpan gambar tersebut.      
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -117,6 +101,7 @@
             }
         }
 
+        // Ketika tag input file denghan class image di klik akan menjalankan fungsi di atas
         $("#image").change(function() {
             readURL(this);
         });
@@ -145,7 +130,11 @@
                 attribution: mbAttr
             });
 
+
         var map = L.map('map', {
+            // titik koordinat disini kita dapatkan dari tabel centrepoint tepatnya dari field location
+            // yang sebelumnya sudah kita tambahkan jadi lokasi map yang akan muncul  sesuai dengan tabel
+            // centrepoint
             center: [{{ $centrepoint->location }}],
             zoom: 14,
             layers: [streets]
@@ -163,6 +152,10 @@
         };
 
         L.control.layers(baseLayers, overlays).addTo(map);
+
+        // Begitu juga dengan curLocation titik koordinatnya dari tabel centrepoint
+        // lalu kita masukkan curLocation tersebut ke dalam variabel marker untuk menampilkan marker
+        // pada peta.
 
         var curLocation = [{{ $centrepoint->location }}];
         map.attributionControl.setPrefix(false);

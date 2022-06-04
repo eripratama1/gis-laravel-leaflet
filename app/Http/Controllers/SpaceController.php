@@ -18,6 +18,7 @@ class SpaceController extends Controller
      */
     public function index()
     {
+        // Menampilkan data dari tabel space
         return view('space.index');
     }
 
@@ -28,11 +29,11 @@ class SpaceController extends Controller
      */
     public function create()
     {
+        // Memanggil model CentrePoint untuk mendapatkan data yang akan dikirimkan ke form create
+        // space
         $centrepoint = CentrePoint::get()->first();
-        $category    = Category::get();
         return view('space.create', [
             'centrepoint' => $centrepoint,
-            'category'    => $category
         ]);
     }
 
@@ -44,20 +45,24 @@ class SpaceController extends Controller
      */
     public function store(Request $request)
     {
+        // Lakukan validasi data
         $this->validate($request, [
             'name' => 'required',
             'content' => 'required',
             'image' => 'image|mimes:png,jpg,jpeg',
-            'category' => 'required',
             'location' => 'required'
         ]);
 
+        // melakukan pengecekan ketika ada file gambar yang akan di input
         $spaces = new Space;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $imageName = time() . '_' . $file->getClientOriginalName();
             $file->move('uploads/imgCover/', $imageName);
         }
+
+        // Memasukkan nilai untuk masing-masing field pada tabel space berdasarkan inputan dari
+        // form create 
         $spaces->image = $imageName;
         $spaces->name = $request->input('name');
         $spaces->slug = Str::slug($request->name, '-');
@@ -65,10 +70,12 @@ class SpaceController extends Controller
         $spaces->content = $request->input('content');
 
         //return dd($spaces);
-         $spaces->save();
-         $spaces->getCategory()->sync($request->category);
 
-         if ($spaces) {
+        // proses simpan data
+        $spaces->save();
+
+        // redirect ke halaman index space
+        if ($spaces) {
             return redirect()->route('space.index')->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->route('spaceI.index')->with('error', 'Data gagal disimpan');
@@ -94,10 +101,10 @@ class SpaceController extends Controller
      */
     public function edit(Space $space)
     {
-        $category = Category::all();
+        // mencari data space yang dipilih berdasarkan id
+        // kemudian menampilkan data tersebut ke form edit space
         $space = Space::findOrFail($space->id);
-        return view('space.edit',[
-            'category' => $category,
+        return view('space.edit', [
             'space' => $space
         ]);
     }
@@ -111,33 +118,37 @@ class SpaceController extends Controller
      */
     public function update(Request $request, Space $space)
     {
+        // Menjalankan validasi
         $this->validate($request, [
             'name' => 'required',
             'content' => 'required',
             'image' => 'image|mimes:png,jpg,jpeg',
-            'category' => 'required',
             'location' => 'required'
         ]);
 
+        // Jika data yang akan diganti ada pada tabel space
+        // cek terlebih dahulu apakah akan mengganti gambar atau tidak
+        // jika gambar diganti hapus terlebuh dahulu gambar lama
         $space = Space::findOrFail($space->id);
         if ($request->hasFile('image')) {
-            if (File::exists("uploads/imgCover/".$space->image)) {
-                File::delete("uploads/imgCover/".$space->image);
+            if (File::exists("uploads/imgCover/" . $space->image)) {
+                File::delete("uploads/imgCover/" . $space->image);
             }
             $file = $request->file("image");
-            $space->image = time().'_'. $file->getClientOriginalName();
-            $file->move('uploads/imgCover/',$space->image);
+            $space->image = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/imgCover/', $space->image);
             $request['image'] = $space->image;
         }
 
+        // Lakukan Proses update data ke tabel space
         $space->update([
             'name' => $request->name,
             'location' => $request->location,
             'content' => $request->content,
-            'slug' => Str::slug($request->name,'-'),
+            'slug' => Str::slug($request->name, '-'),
         ]);
-        $space->getCategory()->sync($request->category);
-
+       
+        // redirect ke halaman index space
         if ($space) {
             return redirect()->route('space.index')->with('success', 'Data berhasil diupdate');
         } else {
@@ -153,13 +164,12 @@ class SpaceController extends Controller
      */
     public function destroy($id)
     {
+        // hapus keseluruhan data pada tabel space begitu juga dengan gambar yang disimpan
         $space = Space::findOrFail($id);
-        if (File::exists("uploads/imgCover/".$space->image)) {
-            File::delete("uploads/imgCover/".$space->image);
+        if (File::exists("uploads/imgCover/" . $space->image)) {
+            File::delete("uploads/imgCover/" . $space->image);
         }
         $space->delete();
-        $space->getCategory()->detach();
         return redirect()->route('space.index');
-
     }
 }

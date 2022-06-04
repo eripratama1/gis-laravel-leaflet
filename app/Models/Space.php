@@ -10,10 +10,6 @@ class Space extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function getCategory()
-    {
-        return $this->belongsToMany(Category::class);
-    }
 
     public function getImage()
     {

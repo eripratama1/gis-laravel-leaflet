@@ -14,7 +14,15 @@
     </style>
 @endsection
 
-@section('content')
+    {{-- Untuk form edit sama dengan form create yang membedakannya hanya route action yaitu update,
+    dan kita juga melakukan passing parameter mke route tersebut , 
+    method post kita ubah menjadi PUT 
+    
+    dan menambahkan value pada tiap-tiap tag input dengan varaibel $space lalu di ikuti nama field 
+    dari tabel space
+    --}}
+
+    @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -90,25 +98,6 @@
 
 
     <script>
-        // var tiles = L.tileLayer(
-        //     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        //         maxZoom: 18,
-        //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-        //             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //         id: 'mapbox/streets-v11',
-        //         tileSize: 512,
-        //         zoomOffset: -1
-        //     }).addTo(map);
-
-        $(".category").select2()
-            .val({!! json_encode($space->getCategory()->allRelatedIds()) !!}).trigger('change');
-
-        $(document).ready(function() {
-            $('.category').select2({
-                placeholder: 'Pilih Data Kategori'
-            })
-        })
-
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

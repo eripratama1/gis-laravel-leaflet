@@ -11,6 +11,11 @@
     </style>
 @endsection
 
+    {{-- Pada form edit centrepoint hampir sama dengan form create centrepoint kita menambahkan cdn css dan js leaflet
+    dan juga me-load jquery. yang membedakannya ada pada tag form di bawah kita mengarahkan routenya
+    ke route update dengan variabel $centrePoint yang kita ambil dari controller centrepoint dari method
+    edit. $centrepoint ini juga akan digunakan lagi pada method update data. --}}
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -47,15 +52,7 @@
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
     <script>
-        // var tiles = L.tileLayer(
-        //     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        //         maxZoom: 18,
-        //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-        //             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //         id: 'mapbox/streets-v11',
-        //         tileSize: 512,
-        //         zoomOffset: -1
-        //     }).addTo(map);
+       
 
         var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -99,6 +96,10 @@
 
         L.control.layers(baseLayers, overlays).addTo(map);
 
+        // untuk current location titik koordinatnya kita dapatkan dari data yang sudah kita input
+        // ke tabel centre point. Di sini kita bisa mengubah nilainya dengan langkah yang sama saat
+        // menambahkan titik koordinat untuk pertama kalinya.
+        
         var curLocation = [{{ $centrePoint->location }}];
         map.attributionControl.setPrefix(false);
 

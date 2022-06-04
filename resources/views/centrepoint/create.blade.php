@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style-css')
+    {{-- load cdn leaflet css --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
         crossorigin="" />
@@ -41,25 +42,18 @@
 @endsection
 
 @push('javascript')
+    {{-- load cdn js leaflet --}}
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
     <script>
-        // var tiles = L.tileLayer(
-        //     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        //         maxZoom: 18,
-        //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-        //             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //         id: 'mapbox/streets-v11',
-        //         tileSize: 512,
-        //         zoomOffset: -1
-        //     }).addTo(map);
-
+        // Menambah attribut pada leaflet
         var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             mbUrl =
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
+        // membuat beberapa layer untuk tampilan map diantaranya satelit, dark mode, street
             var satellite = L.tileLayer(mbUrl, {
                 id: 'mapbox/satellite-v9',
                 tileSize: 512,
@@ -79,10 +73,13 @@
                 attribution: mbAttr
             });
 
+        // Membuat var map untuk instance object map ke dalam tag div yang mempunyai id map
+        // menambahkan titik koordinat latitude dan longitude peta indonesia kedalam opsi center
+        // mengatur zoom map dan mengatur layer yang akan digunakan  
         var map = L.map('map', {
-            center: [-0.4922612112757657, 117.14561375238749],
-            zoom: 14,
-            layers: [streets,satellite]
+            center: [-0.789275,113.921327],
+            zoom: 5,
+            layers: [streets]
         });
 
         var baseLayers = {
@@ -96,16 +93,21 @@
             "Satellite": satellite,
         };
 
+        //Menambahkan beberapa layer ke dalam peta/map
         L.control.layers(baseLayers, overlays).addTo(map);
 
-        var curLocation = [-0.4922612112757657, 117.14561375238749];
+        // set current location / lokasi sekarang dengan koordinat peta indonesia
+        var curLocation = [-0.789275,113.921327];
         map.attributionControl.setPrefix(false);
 
+        // set marker map agar bisa di geser
         var marker = new L.marker(curLocation, {
             draggable: 'true',
         });
         map.addLayer(marker);
 
+        // ketika marker di geser kita akan mengambil nilai latitude dan longitude
+        // kemudian memasukkan nilai tersebut ke dalam properti input text dengan name-nya location
         marker.on('dragend', function(event) {
             var location = marker.getLatLng();
             marker.setLatLng(location, {
@@ -115,6 +117,9 @@
             $('#location').val(location.lat + "," + location.lng).keyup()
         });
 
+        // untuk fungsi di bawah akan mengambil nilai latitude dan longitudenya
+        // dengan cara klik lokasi pada map dan secara otomatis marker juga akan ikut bergeser dan nilai
+        // latitude dan longitudenya akan muncul pada input text location
         var loc = document.querySelector("[name=location]");
         map.on("click", function(e) {
             var lat = e.latlng.lat;

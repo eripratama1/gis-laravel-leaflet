@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style-css')
+    {{-- load jquery datatable untuk menggunakannya --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 @endsection
 
@@ -29,6 +30,10 @@
                             <tbody></tbody>
                             </thead>
                         </table>
+                        
+                        {{-- tag form di gunakan untuk melakukan hapus data centrepoint yang di pilih
+                        jadi ketika button yang ada pada view action.blade di klik akan menjalankan
+                        fungsi javascript sweet alert2  --}}
                         <form action="" method="POST" id="deleteForm">
                             @csrf
                             @method("DELETE")
@@ -42,9 +47,12 @@
 @endsection
 
 @push('javascript')
+    {{-- load jquery dan jquery datatable --}}
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    
     <script>
+    // ajaxserver side  datatable untuk menampilkan data centrepoint
         $(function() {
             $('#dataCentrePoint').DataTable({
                 processing: true,
