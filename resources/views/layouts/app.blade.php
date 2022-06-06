@@ -86,6 +86,13 @@
         <main class="py-4">
             @yield('content')
             @stack('javascript')
+             <script>
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+            })
+        }, 3000)
+    </script>
         </main>
     </div>
 </body>

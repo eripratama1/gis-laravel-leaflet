@@ -48,18 +48,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="">Kategori space</label>
-                                <select name="category[]" multiple="multiple"
-                                    class="category form-control @error('category') is-invalid @enderror" id="">
-                                    @foreach ($category as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
                             <div class="form-group mb-3">
                                 <label for="">Deskripsi</label>
                                 <textarea name="content" class="form-control @error('content')
