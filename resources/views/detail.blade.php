@@ -56,7 +56,7 @@
                         <h4>
                             <strong>Foto</strong>
                         </h4>
-                        <img class="img-fluid" width="200" src="{{ asset('uploads/imgCover/' . $spaces->image) }}"
+                        <img class="img-fluid" width="200" src="{{ $spaces->getImage() }}"
                             alt="">
                         </p>
                     </div>

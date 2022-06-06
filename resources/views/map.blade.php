@@ -111,7 +111,7 @@
         @foreach ($spaces as $item)
             L.marker([{{ $item->location }}])
                 .bindPopup(
-                    "<div class='my-2'><img src='{{ asset('/uploads/imgCover/' . $item->image) }}' class='img-fluid' width='700px'></div>" +
+                    "<div class='my-2'><img src='{{ $item->getImage() }}' class='img-fluid' width='700px'></div>" +
                     "<div class='my-2'><strong>Nama Space:</strong> <br>{{ $item->name }}</div>" + 
                     "<div><a href='{{ route('map.show', $item->slug) }}' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
                     "<div class='my-2'></div>"
@@ -152,7 +152,7 @@
             L.marker([{{ $item->location }}]
                 )
                 .bindPopup(
-                    "<div class='my-2'><img src='{{ asset('/uploads/imgCover/' . $item->image) }}' class='img-fluid' width='700px'></div>" +
+                    "<div class='my-2'><img src='{{ $item->getImage() }}' class='img-fluid' width='700px'></div>" +
                     "<div class='my-2'><strong>Nama Spot:</strong> <br>{{ $item->name }}</div>" +
                     "<a href='{{ route('map.show', $item->slug) }}' class='btn btn-outline-info btn-sm'>Detail Spot</a></div>" +
                     "<div class='my-2'></div>"
