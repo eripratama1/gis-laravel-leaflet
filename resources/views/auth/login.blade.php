@@ -4,6 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <blockquote>
+                <strong>
+                    ** Login menggunakan akun administrator <br>
+                    ** Email (admin@email.test) <br>
+                    ** Password (password123) <br>
+                    ** Jika ingin menggunakan akun baru silahkan lakukan register
+                </strong>
+            </blockquote>
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
