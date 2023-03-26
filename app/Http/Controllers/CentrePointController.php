@@ -30,7 +30,14 @@ class CentrePointController extends Controller
         /**
          * Menampilkan form create centrepoint
          */
-        return view('centrepoint.create');
+        $centrePoint = CentrePoint::count();
+        if ($centrePoint < 1) {
+            # code...
+            return view('centrepoint.create');
+        } else {
+            return redirect()->route('centre-point.index')
+            ->with('success', 'Hanya bisa input 1 data centre point saja, silahkan hapus data sebelumnya untuk koordinat baru');
+        }
     }
 
     /**
