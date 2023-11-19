@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Cloudinary\StoreImage;
 use App\Models\Category;
 use App\Models\CentrePoint;
 use App\Models\Space;
@@ -57,14 +56,10 @@ class SpaceController extends Controller
         // melakukan pengecekan ketika ada file gambar yang akan di input
         $spaces = new Space();
         if ($request->hasFile('image')) {
-            
             $file = $request->file('image');
-            $uploadFile = StoreImage::upload($file->getRealPath(),$file->getClientOriginalName());
+            $uploadFile = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/imgCover/', $uploadFile);
             $spaces->image = $uploadFile;
-
-            // $uploadFile = time() . '_' . $file->getClientOriginalName();
-            // $file->move('uploads/imgCover/', $uploadFile);
-            // $spaces->image = $uploadFile;
         }
 
         // Memasukkan nilai untuk masing-masing field pada tabel space berdasarkan inputan dari
@@ -137,16 +132,15 @@ class SpaceController extends Controller
         $space = Space::findOrFail($space->id);
         if ($request->hasFile('image')) {
             
-            // if (File::exists("uploads/imgCover/" . $space->image)) {
-            //     File::delete("uploads/imgCover/" . $space->image);
-            // }
+            if (File::exists("uploads/imgCover/" . $space->image)) {
+                File::delete("uploads/imgCover/" . $space->image);
+            }
             
             $file = $request->file("image");
-            $uploadFile = StoreImage::replace($space->image,$file->getRealPath(),$file->getClientOriginalName());
-            
-            // $uploadFile = time() . '_' . $file->getClientOriginalName();
-            // $file->move('uploads/imgCover/', $uploadFile);
-            // $space->image = $uploadFile;
+            //$uploadFile = StoreImage::replace($space->image,$file->getRealPath(),$file->getClientOriginalName());
+            $uploadFile = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/imgCover/', $uploadFile);
+            $space->image = $uploadFile;
         }
 
         // Lakukan Proses update data ke tabel space
@@ -155,7 +149,6 @@ class SpaceController extends Controller
             'location' => $request->location,
             'content' => $request->content,
             'slug' => Str::slug($request->name, '-'),
-            'image' => $uploadFile,
         ]);
        
         // redirect ke halaman index space
